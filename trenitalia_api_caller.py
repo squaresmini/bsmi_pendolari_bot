@@ -59,7 +59,7 @@ def get_status_mess(station_id, train_number):
             stops_list.append("%s (%s)" % (s.station,ttime))
 
         stops_str = " - ".join(stops_list)
-
+    print(str(train))
     str_result = str(train) + "\n" \
                  + stops_str + "\n" \
                  + train.status_str() \
