@@ -1,9 +1,13 @@
 import trenitalia_api_caller
 from telegram.ext import Updater,CommandHandler
 import logging
+import json
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 log = logging.getLogger("bsmi_pendolari_bot")
+
+with open('botconfig.json') as json_data_file:
+    config = json.load(json_data_file)
 
 def start(update, context):
     log.info("Starting start command for chat " + str(update.effective_chat.id)+" with "+update.effective_user.name)
@@ -36,7 +40,7 @@ def notify_train(context):
 
 
 def main():
-    updater = Updater(token='', use_context=True)
+    updater = Updater(token=config['botkey'], use_context=True)
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
