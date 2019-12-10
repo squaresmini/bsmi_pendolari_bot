@@ -36,7 +36,7 @@ def notify_train(context):
 
 
 def main():
-    updater = Updater(token='907871825:AAE38Zk9qcc2fdxlS2kGW9EAddsWgOmuMxw', use_context=True)
+    updater = Updater(token='', use_context=True)
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
