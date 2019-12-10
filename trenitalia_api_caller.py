@@ -1,6 +1,9 @@
 import requests
 from datetime import datetime
 from train import Train
+import logging
+
+log = logging.getLogger("trenitalia_api_caller")
 
 TRAIN_LIST = [
     ('9700', "07:34"),
@@ -26,9 +29,11 @@ TRENITALIA_URL = 'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatre
 def call_trenitalia_api(path):
     resp = requests.get(TRENITALIA_URL + path)
     if resp.status_code == 200:
+        log.info("API call successful")
         return resp
     else:
-        raise Exception("Errore: status code = " + resp.status_code)
+        log.error("API call failed: "+str(resp.status_code))
+        raise Exception("Errore: status code = " + str(resp.status_code))
 
 
 def get_status_mess(station_id, train_number):
@@ -59,7 +64,7 @@ def get_status_mess(station_id, train_number):
             stops_list.append("%s (%s)" % (s.station,ttime))
 
         stops_str = " - ".join(stops_list)
-    print(str(train))
+
     str_result = str(train) + "\n" \
                  + stops_str + "\n" \
                  + train.status_str() \
