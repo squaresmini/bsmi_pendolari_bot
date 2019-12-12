@@ -1,3 +1,5 @@
 __pycache__/
 .idea/
 botconfig.json
+bsmi_bot.crt
+bsmi_bot.pem
