@@ -1,17 +1,23 @@
 import trenitalia_api_caller
 from telegram.ext import Updater,CommandHandler
 import logging
-import json
+import os
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 log = logging.getLogger("bsmi_pendolari_bot")
 
-with open('botconfig.json') as json_data_file:
-    config = json.load(json_data_file)
+
+START_MESS='''
+Questo bot ti permette di sapere facilmente lo stato del prossimo treno Brescia-Milano (durante la mattina) e Milano-Brescia (nel pomeriggio).
+
+Lista comandi:
+/status : per sapere lo stato del prossimo treno
+/status <num_treno> : status di un treno particolare (deve passare da BS o Milano)
+'''
 
 def start(update, context):
     log.info("Starting start command for chat " + str(update.effective_chat.id)+" with "+update.effective_user.name)
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Ciao "+update.effective_user.name+"! Digita /status per sapere lo stato del prossimo treno")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Ciao "+update.effective_user.name+"!"+START_MESS)
 
 
 def status(update, context):
@@ -40,7 +46,7 @@ def notify_train(context):
 
 
 def main():
-    updater = Updater(token=config['botkey'], use_context=True)
+    updater = Updater(token=os.environ.get('BOTKEY'), use_context=True)
     dispatcher = updater.dispatcher
 
     start_handler = CommandHandler('start', start)
