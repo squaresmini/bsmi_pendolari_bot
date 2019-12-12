@@ -3,7 +3,7 @@ from telegram.ext import Updater,CommandHandler
 import logging
 import os
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
+logging.basicConfig(filename='bsmi_pendolari.log',format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 log = logging.getLogger("bsmi_pendolari_bot")
 
 
