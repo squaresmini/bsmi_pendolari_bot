@@ -1,17 +1,20 @@
 import requests
-from datetime import datetime
+from datetime import datetime,timedelta
 from train import Train
 import logging
 
 log = logging.getLogger("trenitalia_api_caller")
 
-TRAIN_LIST = [
+TRAIN_MORN_LIST = [
     ('9700', "07:34"),
     ('9702', "08:09"),
     ('9706', "08:39"),
     ('9708', "09:09"),
     ('9712', "09:39"),
     ('9716', "10:09"),
+]
+
+TRAIN_EVE_LIST = [
     ('9745', "16:45"),
     ('9747', "17:15"),
     ('9749', "17:45"),
@@ -86,11 +89,13 @@ def retrieve_train(number):
 
 def calculate_next_train():
     curtime = datetime.now().time()
-    for train_num,train_time in TRAIN_LIST:
-        ttime  = datetime.strptime(train_time, "%H:%M").time()
+    for train_num,train_time in TRAIN_MORN_LIST + TRAIN_EVE_LIST:
+        td = timedelta(minutes=10)
+        traindate = datetime.strptime(train_time, "%H:%M") + td
+        ttime = traindate.time()
         if  curtime<ttime:
             return train_num
-    return TRAIN_LIST[0][0]
+    return None
 
 
 
