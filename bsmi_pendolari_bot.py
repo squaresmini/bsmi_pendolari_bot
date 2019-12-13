@@ -6,7 +6,8 @@ import os
 import logging.config
 from telegram import InlineKeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, ReplyKeyboardMarkup
 
-logging.config.fileConfig('logging.conf')
+dir_path = os.path.dirname(os.path.realpath(__file__))
+logging.config.fileConfig(dir_path + '/logging.conf')
 
 log = logging.getLogger("bsmi_pendolari_bot")
 
@@ -166,7 +167,7 @@ def defaultmins_eve(update, context):
     return select_mins(update, context, 'evening', 30)
 
 
-def notify_train(update, context):
+def set_alert(update, context):
     keyboard = calculate_keyboard_markup(trenitalia_api_caller.TRAIN_MORN_LIST)
     update.message.reply_text(
         "Impostiamo il treno della mattina: "
@@ -186,6 +187,9 @@ def cancel(update, context):
 
     return ConversationHandler.END
 
+
+def alert_status(update,context):
+    status(update,context)
 
 def delete_notifications(update, context):
     user_data = context.user_data
@@ -272,7 +276,7 @@ def main():
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('setalert', notify_train)],
+        entry_points=[CommandHandler('setalert', set_alert)],
 
         states={
             TRAIN_MORN: [MessageHandler(filter_morn, select_train_morning),
